@@ -18,7 +18,6 @@ def zc_uptime(connection, database='main'):
 def zc_dbsize(connection, database='main'):
     """size of the database (default=main) in bytes"""
     db = zope.component.getUtility(ZODB.interfaces.IDatabase, database)
-    import pdb;pdb.set_trace()
     print >> connection, db.getSize()
 
 
