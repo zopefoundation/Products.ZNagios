@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6 (2012-12-19)
+----------------
+
+- Enable registration of znagios probes as zc.monitor utilities (using five.z2monitor)
+
 0.5 - 2011-03-14
 ----------------
 
