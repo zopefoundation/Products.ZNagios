@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+import inspect
+import psutil
+from os import getpid
+import re
 import time
 import zope.component
 import ZODB.interfaces
 from Zope2 import app as App
+from zc.z3monitor.interfaces import IZ3MonitorPlugin
+from cStringIO import StringIO
 
 from Products.ZNagios import get_refcount, get_conflictInfo, get_activity
 
@@ -73,3 +79,60 @@ def zc_requestqueue_size(connection):
         zrendevous = _handle.im_self
         queue_size = len(zrendevous._lists[1])
     print >> connection, queue_size
+
+
+def zc_memory_percent(connection):
+    pid = getpid()
+    p = psutil.Process(pid)
+    print >> connection, p.memory_percent()
+
+
+def zc_cpu_times(connection):
+    pid = getpid()
+    p = psutil.Process(pid)
+    cpu_times = p.cpu_times()
+    print >> connection, cpu_times.user, cpu_times.system
+
+
+GAUGE_RETURNS = {'cpu_times': ['user', 'system'],
+                 'dbactivity': ['load_count', 'store_count', 'total_connections']}
+
+
+def return_values(stream, prefix):
+    values = re.split(' +', stream.getvalue().strip())
+    return dict(zip(GAUGE_RETURNS.get(prefix, ['']), values))
+
+
+def beautify_return_values(connection, tempStream, name, dbname=None):
+    values = return_values(tempStream, name)
+    if dbname is not None:
+        prefix = '%s.%s' % (name, dbname)
+    else:
+        prefix = name
+    for probe_detail, value in values.items():
+        if len(values) > 1:
+            print >> connection, str("%s.%s : %s" % (prefix, probe_detail, value))
+        else:
+            print >> connection, str("%s : %s" % (prefix, value))
+
+
+def stats(connection):
+    app = App()
+    dbs = app.Control_Panel.Database.getDatabaseNames()
+    dbs.remove('temporary')
+    for name, probe in zope.component.getUtilitiesFor(IZ3MonitorPlugin):
+        if name in ['help', 'stats']:
+            continue
+        argspec = inspect.getargspec(probe)
+        if 'database' in argspec.args:
+            for dbname in dbs:
+                try:
+                    tempStream = StringIO()
+                    probe(tempStream, dbname)
+                    beautify_return_values(connection, tempStream, name, dbname)
+                except:
+                    pass
+        elif argspec.args == ['connection']:
+            tempStream = StringIO()
+            probe(tempStream)
+            beautify_return_values(connection, tempStream, name)

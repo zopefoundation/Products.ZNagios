@@ -26,6 +26,7 @@ setup(name='Products.ZNagios',
       zip_safe=False,
       install_requires=[
         'setuptools',
+        'psutil'
         # 'Zope2',
       ],
 )

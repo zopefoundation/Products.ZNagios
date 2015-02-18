@@ -45,4 +45,19 @@
      provides="zc.z3monitor.interfaces.IZ3MonitorPlugin"
      name="requestqueue_size" />
 
+   <utility
+     component=".zcmonitor.stats"
+     provides="zc.z3monitor.interfaces.IZ3MonitorPlugin"
+     name="stats" />
+
+   <utility
+     component=".zcmonitor.zc_memory_percent"
+     provides="zc.z3monitor.interfaces.IZ3MonitorPlugin"
+     name="memory_percent" />
+
+   <utility
+     component=".zcmonitor.zc_cpu_times"
+     provides="zc.z3monitor.interfaces.IZ3MonitorPlugin"
+     name="cpu_times" />
+
 </configure>
