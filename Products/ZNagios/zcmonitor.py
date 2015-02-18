@@ -7,7 +7,7 @@ from Zope2 import app as App
 from Products.ZNagios import get_refcount, get_conflictInfo, get_activity
 
 
-def zc_uptime(connection, database='main'):
+def zc_uptime(connection):
     """uptime of the zope instance in seconds"""
     app = App()
     elapsed = time.time() - app.Control_Panel.process_start
