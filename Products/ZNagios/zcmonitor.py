@@ -107,7 +107,7 @@ def return_values(stream, prefix):
 def beautify_return_values(connection, tempStream, name, dbname=None):
     values = return_values(tempStream, name)
     if dbname is not None:
-        prefix = '%s.%s' % (name, dbname)
+        prefix = '%s.%s' % (dbname, name)
     else:
         prefix = name
     for probe_detail, value in values.items():
