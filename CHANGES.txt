@@ -4,7 +4,11 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix stats probe for probe which are collection and other args
+  [bsuttor]
+
+- Add stats probe
+  [jfroche]
 
 
 0.6 (2012-12-19)
