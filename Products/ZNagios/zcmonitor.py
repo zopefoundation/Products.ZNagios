@@ -133,7 +133,7 @@ def stats(connection):
                     beautify_return_values(connection, tempStream, name, dbname)
                 except:
                     pass
-        elif argspec.args == ['connection']:
+        elif 'connection' in argspec.args:
             tempStream = StringIO()
             probe(tempStream)
             beautify_return_values(connection, tempStream, name)
