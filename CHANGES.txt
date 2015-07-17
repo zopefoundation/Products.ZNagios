@@ -1,8 +1,17 @@
 Changelog
 =========
 
-0.7 (unreleased)
+0.8 (unreleased)
 ----------------
+
+- Nothing changed yet.
+
+
+0.7 (2015-07-17)
+----------------
+
+- Add MANIFEST.in
+  [bsuttor]
 
 - Fix stats probe for probe which are collection and other args
   [bsuttor]
