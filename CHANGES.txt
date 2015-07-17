@@ -4,6 +4,9 @@ Changelog
 0.7 (unreleased)
 ----------------
 
+- Add MANIFEST.in
+  [bsuttor]
+
 - Fix stats probe for probe which are collection and other args
   [bsuttor]
 
