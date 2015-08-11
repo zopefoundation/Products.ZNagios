@@ -4,7 +4,11 @@ Changelog
 0.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Do not get threads in stats probe.
+  [bsuttor]
+
+- Fix beautify_return_values for date.
+  [bsuttor]
 
 
 0.7 (2015-07-17)
