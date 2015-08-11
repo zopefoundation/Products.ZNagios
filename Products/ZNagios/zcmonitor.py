@@ -26,6 +26,7 @@ def zc_dbsize(connection, database='main'):
     app = App()
     db = app.Control_Panel.Database[database]
     print >> connection, db._p_jar.db().getSize()
+    app._p_jar.close()
 
 
 def zc_objectcount(connection, database='main'):
@@ -101,7 +102,10 @@ GAUGE_RETURNS = {'cpu_times': ['user', 'system'],
 
 def return_values(stream, prefix):
     values = re.split(' +', stream.getvalue().strip())
-    return dict(zip(GAUGE_RETURNS.get(prefix, ['']), values))
+    if prefix in GAUGE_RETURNS.keys():
+        return dict(zip(GAUGE_RETURNS.get(prefix, [prefix]), values))
+    else:
+        return {prefix: " ".join(values)}
 
 
 def beautify_return_values(connection, tempStream, name, dbname=None):
@@ -111,6 +115,7 @@ def beautify_return_values(connection, tempStream, name, dbname=None):
     else:
         prefix = name
     for probe_detail, value in values.items():
+
         if len(values) > 1:
             print >> connection, str("%s.%s : %s" % (prefix, probe_detail, value))
         else:
@@ -122,7 +127,7 @@ def stats(connection):
     dbs = app.Control_Panel.Database.getDatabaseNames()
     dbs.remove('temporary')
     for name, probe in zope.component.getUtilitiesFor(IZ3MonitorPlugin):
-        if name in ['help', 'stats']:
+        if name in ['help', 'stats', 'threads']:
             continue
         argspec = inspect.getargspec(probe)
         if 'database' in argspec.args:
@@ -137,3 +142,4 @@ def stats(connection):
             tempStream = StringIO()
             probe(tempStream)
             beautify_return_values(connection, tempStream, name)
+    app._p_jar.close()
