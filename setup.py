@@ -7,8 +7,8 @@ setup(name='Products.ZNagios',
       description="ZNagios provides the ability for Nagios and munin to tap "
                   "into the Zope2 server and retrieve status and performance "
                   "data.",
-      long_description=open("README.txt").read() + "\n" +
-                       open("CHANGES.txt").read(),
+      long_description=open("README.rst").read() + "\n" +
+                       open("CHANGES.rst").read(),
       classifiers=[
         "Framework :: Zope2",
         "License :: OSI Approved :: Zope Public License",

@@ -1,5 +1,4 @@
 include MANIFEST.in
-include *.txt
-include buildout.cfg
+inlcude *.txt *.rst *.cfg
 recursive-exclude Products *.pyc
 graft Products
