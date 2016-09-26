@@ -140,6 +140,9 @@ def stats(connection):
                     pass
         elif 'connection' in argspec.args:
             tempStream = StringIO()
-            probe(tempStream)
-            beautify_return_values(connection, tempStream, name)
+            try:
+                probe(tempStream)
+                beautify_return_values(connection, tempStream, name)
+            except:
+                pass
     app._p_jar.close()
