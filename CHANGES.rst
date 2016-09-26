@@ -4,7 +4,8 @@ Changelog
 0.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use same way to get stats database than stats connection probes.
+  [bsuttor]
 
 
 0.7.1 (2015-08-11)
