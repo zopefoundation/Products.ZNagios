@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.7.2 (unreleased)
+0.7.2 (2016-09-26)
 ------------------
 
 - Use same way to get stats database than stats connection probes.
