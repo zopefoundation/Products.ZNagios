@@ -54,7 +54,7 @@ def printHelp():
 
 try:
     optlist, args = getopt.getopt(sys.argv[1:], 'iVhH:p:d:r:a:v?',
-            ['version', 'help', 'hostname=', 'port=', 'database=', 
+            ['version', 'help', 'hostname=', 'port=', 'database=',
             'references=', 'authentication=', 'ignore-errors'])
 except getopt.GetoptError, errorStr:
     print errorStr
@@ -108,14 +108,15 @@ try:
     else:
         url = 'http://%s:%s/Control_Panel/nagios' % (hostName, port)
     request = urllib2.Request(url)
-    base64string = base64.encodestring('%s' % (authentication))[:-1]
-    request.add_header("Authorization", "Basic %s" % base64string)
+    if authentication:
+        base64string = base64.b64encode(authentication)
+        request.add_header("Authorization", "Basic %s" % base64string)
     htmlFile = urllib2.urlopen(request)
     data = htmlFile.readlines()
 except Exception, e:
     print e
     sys.exit(nagiosStateCritical)
-    
+
 result = {}
 # Blindly convert this to our dict:
 for x in data:
@@ -169,6 +170,6 @@ if not ignoreErrors:
 # Provide uptime
 uptime = result.get('uptime', 'unknown')
 
-print 'Up: %s Refcount: %s ZODB: %s Mb Errors: None' % (uptime, references, database_size/(1024*1024))
+print 'Up: %s Refcount: %s ZODB: %s Mb Errors: None' % (uptime, references, database_size / (1024 * 1024))
 
 sys.exit(nagiosStateOk)
