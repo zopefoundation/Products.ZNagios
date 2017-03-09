@@ -4,7 +4,7 @@ Changelog
 0.7.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Python2.7 compatibility for munin_client.py [fRiSi]
 
 
 0.7.2 (2016-09-26)

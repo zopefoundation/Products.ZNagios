@@ -41,7 +41,7 @@ class GraphBase(object):
         request = urllib2.Request(url)
         if AUTHORIZATION:
             request.add_header('Authorization', 'Basic %s' %
-                               base64.encodestring(AUTHORIZATION))
+                               base64.b64encode(AUTHORIZATION))
         result = urllib2.urlopen(request).readlines()
         self.data = {}
         for line in result:
@@ -58,8 +58,8 @@ class SimpleGraph(GraphBase):
     title = ''
     name = ''
     key = ''
-    vlabel = ''  #label for y-axis, use name if vlabel is not specified
-    cdef = ''   #rpn-expression used to compute the value (eg `%s,86400,/') to devide the value by 86400
+    vlabel = ''  # label for y-axis, use name if vlabel is not specified
+    cdef = ''   # rpn-expression used to compute the value (eg `%s,86400,/') to devide the value by 86400
 
 
     def do_fetch(self):
