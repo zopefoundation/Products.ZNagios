@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.7.3'
+version = '0.7.4.dev0'
 
 setup(name='Products.ZNagios',
       version=version,
