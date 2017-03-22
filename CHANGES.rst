@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.7.3 (unreleased)
+0.7.3 (2017-03-22)
 ------------------
 
 - Always close connection when there is an exception/error in a probe.
