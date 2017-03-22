@@ -4,7 +4,11 @@ Changelog
 0.7.3 (unreleased)
 ------------------
 
-- Python2.7 compatibility for munin_client.py [fRiSi]
+- Always close connection when there is an exception/error in a probe.
+  [bsuttor]
+
+- Python2.7 compatibility for munin_client.py 
+  [fRiSi]
 
 
 0.7.2 (2016-09-26)

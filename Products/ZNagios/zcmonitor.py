@@ -1,32 +1,42 @@
 # -*- coding: utf-8 -*-
+from cStringIO import StringIO
+from os import getpid
+from Products.ZNagios import get_activity
+from Products.ZNagios import get_conflictInfo
+from Products.ZNagios import get_refcount
+from zc.z3monitor.interfaces import IZ3MonitorPlugin
+from Zope2 import app as App
+
 import inspect
 import psutil
-from os import getpid
 import re
 import time
-import zope.component
 import ZODB.interfaces
-from Zope2 import app as App
-from zc.z3monitor.interfaces import IZ3MonitorPlugin
-from cStringIO import StringIO
-
-from Products.ZNagios import get_refcount, get_conflictInfo, get_activity
+import zope.component
 
 
 def zc_uptime(connection):
     """uptime of the zope instance in seconds"""
     app = App()
-    elapsed = time.time() - app.Control_Panel.process_start
-    print >> connection, elapsed
-    app._p_jar.close()
+    try:
+        elapsed = time.time() - app.Control_Panel.process_start
+        print >> connection, elapsed
+    except:
+        print >> connection, 0
+    finally:
+        app._p_jar.close()
 
 
 def zc_dbsize(connection, database='main'):
     """size of the database (default=main) in bytes"""
     app = App()
-    db = app.Control_Panel.Database[database]
-    print >> connection, db._p_jar.db().getSize()
-    app._p_jar.close()
+    try:
+        db = app.Control_Panel.Database[database]
+        print >> connection, db._p_jar.db().getSize()
+    except:
+        print >> connection, 0
+    finally:
+        app._p_jar.close()
 
 
 def zc_objectcount(connection, database='main'):
@@ -38,8 +48,12 @@ def zc_objectcount(connection, database='main'):
 def zc_refcount(connection):
     """the total amount of object reference counts"""
     app = App()
-    print >> connection, get_refcount(app)
-    app._p_jar.close()
+    try:
+        print >> connection, get_refcount(app)
+    except:
+        print >> connection, 0
+    finally:
+        app._p_jar.close()
 
 
 def zc_errorcount(connection, objectId=None):
@@ -48,10 +62,14 @@ def zc_errorcount(connection, objectId=None):
     You can also provide the objectId of the object that contains another error_log
     """
     app = App()
-    if objectId is not None:
-        app = getattr(app, objectId)
-    print >> connection, len(app.error_log._getLog())
-    app._p_jar.close()
+    try:
+        if objectId is not None:
+            app = getattr(app, objectId)
+        print >> connection, len(app.error_log._getLog())
+    except:
+        print >> connection, 0
+    finally:
+        app._p_jar.close()
 
 
 def zc_conflictcount(connection):
@@ -67,10 +85,14 @@ def zc_unresolved_conflictcount(connection):
 def zc_dbactivity(connection, database='main', last_minutes=60 * 5):
     """number of load, store and connections on database (default=main) for the last x minutes (default=5)"""
     app = App()
-    db = app.Control_Panel.Database[database]
-    activity = get_activity(db)
-    print >> connection, activity['total_load_count'], " ", activity['total_store_count'], " ", activity['total_connections']
-    app._p_jar.close()
+    try:
+        db = app.Control_Panel.Database[database]
+        activity = get_activity(db)
+        print >> connection, activity['total_load_count'], " ", activity['total_store_count'], " ", activity['total_connections']
+    except:
+        print >> connection, 0, " ", 0, " ", 0
+    finally:
+        app._p_jar.close()
 
 
 def zc_requestqueue_size(connection):
